@@ -1,14 +1,18 @@
 package com.example.jpa.domain.post.post.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Setter
 @Getter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Post {
 
     @Id

@@ -13,15 +13,21 @@ public class PostService {
     private final PostRepository postRepository;
 
     public Post write(String title, String body) {
-        Post post = new Post();
 
-        post.setCreatedDate(LocalDateTime.now());
-        post.setModifiedDate(LocalDateTime.now());
-        post.setTitle(title);
-        post.setBody(body);
+        Post post = Post.builder()
+                .title(title)
+                .body(body)
+                .createdDate(LocalDateTime.now())
+                .modifiedDate(LocalDateTime.now())
+                .build();
+
 
         postRepository.save(post);
 
         return post;
+    }
+
+    public long count() {
+        return postRepository.count();
     }
 }

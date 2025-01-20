@@ -16,6 +16,12 @@ public class BaseInitData {
     @Bean
     public ApplicationRunner applicationRunner() {
         return args -> {
+
+            // 데이터가 3개가 이미 있으면 패스
+            if( postService.count() > 0 ) {
+                return ;
+            }
+
             Post p1 = postService.write("title1", "body1");
             Post p2 = postService.write("title2", "body2");
             Post p3 = postService.write("title3", "body3");
