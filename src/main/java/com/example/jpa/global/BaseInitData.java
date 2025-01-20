@@ -1,76 +1,50 @@
 package com.example.jpa.global;
 
+import com.example.jpa.domain.post.comment.entity.Comment;
+import com.example.jpa.domain.post.comment.service.CommentService;
 import com.example.jpa.domain.post.post.entity.Post;
-import com.example.jpa.domain.post.post.sevice.PostService;
+import com.example.jpa.domain.post.post.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 @RequiredArgsConstructor
 public class BaseInitData {
 
     private final PostService postService;
+    private final CommentService commentService;
 
     @Bean
     @Order(1)
     public ApplicationRunner applicationRunner() {
         return args -> {
-
+            // 샘플 데이터 3개 생성.
             // 데이터가 3개가 이미 있으면 패스
             if( postService.count() > 0 ) {
                 return ;
             }
 
-            Post p1 = postService.write("title1", "body1");
-            Post p2 = postService.write("title2", "body2");
-            Post p3 = postService.write("title3", "body3");
-            System.out.println("p1: " + p1.getId());
-            System.out.println("p2: " + p2.getId());
-            System.out.println("p3: " + p3.getId());
+            postService.write("title1", "body1");
+            postService.write("title2", "body2");
+            postService.write("title3", "body3");
+
         };
     }
 
     @Bean
     @Order(2)
     public ApplicationRunner applicationRunner2() {
+        return args -> {
 
-        return new ApplicationRunner() {
-            @Override
-            @Transactional
-            public void run(ApplicationArguments args) throws Exception {
-                Post post = postService.findById(1L).get();
-                Thread.sleep(1000);
-                postService.modify(post, "new title122", "new body122");
-            }
-        };
-    }
+            Post post = postService.findById(1L).get();
 
-    @Bean
-    @Order(3)
-    public ApplicationRunner applicationRunner3() {
+            Comment c1 = commentService.write(post.getId(), "comment1");
+            Comment c2 = commentService.write(post.getId(), "comment2");
+            Comment c3 = commentService.write(post.getId(), "comment3");
 
-        return new ApplicationRunner() {
-            @Override
-            @Transactional
-            public void run(ApplicationArguments args) throws Exception {
-                Post p1 = postService.findById(1L).get();
-                Post p2 = postService.findById(2L).get();
-                Thread.sleep(1000);
-
-                System.out.println("------p1 delete start------");
-                postService.delete(p1);
-                System.out.println("-------p1 delete finish-----");
-
-                System.out.println("-----p2 delete start--------");
-                postService.delete(p2);
-                System.out.println("------p2 delete finish-------");
-
-            }
         };
     }
 }

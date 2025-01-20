@@ -1,4 +1,4 @@
-package com.example.jpa.domain.post.post.sevice;
+package com.example.jpa.domain.post.post.service;
 
 import com.example.jpa.domain.post.post.entity.Post;
 import com.example.jpa.domain.post.post.repository.PostRepository;
@@ -11,6 +11,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PostService {
+
     private final PostRepository postRepository;
 
     public Post write(String title, String body) {
@@ -20,21 +21,28 @@ public class PostService {
                 .body(body)
                 .build();
 
-
-
-        postRepository.save(post);
-
-        return post;
-    }
-
-    public Post modify(Post post, String title, String body) {
-        post.setTitle(title);
-        post.setBody(body);
-
         return postRepository.save(post);
     }
 
     @Transactional
+    public Post modify(Post post, String title, String body) {
+
+        post.setTitle(title);
+        post.setBody(body);
+
+        return post;
+    }
+
+    public long count() {
+        return postRepository.count();
+    }
+
+    public Optional<Post> findById(long id) {
+        return postRepository.findById(id);
+    }
+
+
+    @Transactional // 메서드의 시작이 트랜잭션 시작. 메서드의 끝이 트랜잭션 종료.
     public void modify2(long id, String title, String body) {
         Post post = postRepository.findById(id).get();
 
@@ -42,15 +50,11 @@ public class PostService {
         post.setBody(body);
     }
 
-    public Optional<Post> findById(Long id) {
-        return postRepository.findById(id);
-    }
-
-    public long count() {
-        return postRepository.count();
-    }
-
     public void delete(Post post) {
         postRepository.delete(post);
+    }
+
+    public void deleteById(long id) {
+        postRepository.deleteById(id);
     }
 }
