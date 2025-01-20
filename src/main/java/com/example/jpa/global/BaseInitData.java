@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 @Configuration
 @RequiredArgsConstructor
@@ -14,6 +15,7 @@ public class BaseInitData {
     private final PostService postService;
 
     @Bean
+    @Order(1)
     public ApplicationRunner applicationRunner() {
         return args -> {
 
@@ -28,6 +30,15 @@ public class BaseInitData {
             System.out.println("p1: " + p1.getId());
             System.out.println("p2: " + p2.getId());
             System.out.println("p3: " + p3.getId());
+        };
+    }
+
+    @Bean
+    @Order(2)
+    public ApplicationRunner applicationRunner2() {
+        return args -> {
+            Post post = postService.findById(1L).get();
+            postService.modify(post, "new title", "new body");
         };
     }
 }
