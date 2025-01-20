@@ -4,6 +4,7 @@ import com.example.jpa.domain.post.post.entity.Post;
 import com.example.jpa.domain.post.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -30,9 +31,15 @@ public class PostService {
         post.setTitle(title);
         post.setBody(body);
 
-        postRepository.save(post);
-        return post;
+        return postRepository.save(post);
+    }
 
+    @Transactional
+    public void modify2(long id, String title, String body) {
+        Post post = postRepository.findById(id).get();
+
+        post.setTitle(title);
+        post.setBody(body);
     }
 
     public Optional<Post> findById(Long id) {
