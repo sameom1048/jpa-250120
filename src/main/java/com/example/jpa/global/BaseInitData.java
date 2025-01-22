@@ -35,6 +35,11 @@ public class BaseInitData {
     }
 
     @Transactional
+    public void work2() {
+
+    }
+
+    @Transactional
     public void work1() {
 
         if (postService.count() > 0) {
@@ -47,7 +52,7 @@ public class BaseInitData {
                 .body("comment1")
                 .build();
 
-//        c1 = commentService.save(c1);
+        c1 = commentService.save(c1);
 
         p1.addComment(c1);
 
