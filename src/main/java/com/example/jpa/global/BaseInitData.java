@@ -31,12 +31,18 @@ public class BaseInitData {
     public ApplicationRunner applicationRunner() {
         return args -> {
             self.work1();
+            self.work2();
         };
     }
 
     @Transactional
     public void work2() {
-
+//        Post post = postService.findById(1L).get();
+//
+//        List<Comment> comments = post.getComments();
+//
+//        String body = comments.get(0).getBody();
+//        System.out.println(body);
     }
 
     @Transactional
