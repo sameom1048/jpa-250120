@@ -1,11 +1,15 @@
 package com.example.jpa.domain.post.post.service;
 
+import com.example.jpa.domain.member.entity.Member;
 import com.example.jpa.domain.post.post.entity.Post;
 import com.example.jpa.domain.post.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,9 +18,10 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public Post write(String title, String body) {
+    public Post write(Member author, String title, String body) {
 
         Post post = Post.builder()
+                .author(author)
                 .title(title)
                 .body(body)
                 .build();
@@ -56,5 +61,41 @@ public class PostService {
 
     public void deleteById(long id) {
         postRepository.deleteById(id);
+    }
+
+    public List<Post> findAll() {
+        return postRepository.findAll();
+    }
+
+    public Page<Post> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable);
+    }
+
+    public List<Post> findByTitle(String title) {
+        return postRepository.findByTitle(title);
+    }
+
+    public List<Post> findByTitleAndBody(String title1, String body1) {
+        return postRepository.findByTitleAndBody(title1, body1);
+    }
+
+    public List<Post> findByTitleLike(String keyword) {
+        return postRepository.findByTitleLike(keyword);
+    }
+
+    public Page<Post> findByTitleLike(String keyword, Pageable pageable) {
+        return postRepository.findByTitleLike(keyword, pageable);
+    }
+
+    public List<Post> findByOrderByIdDesc() {
+        return postRepository.findByOrderByIdDesc();
+    }
+
+    public List<Post> findTop2ByTitleOrderByIdDesc(String title) {
+        return postRepository.findTop2ByTitleOrderByIdDesc(title);
+    }
+
+    public List<Post> findByAuthorUsername(String username) {
+        return postRepository.findByAuthorUsername(username);
     }
 }
