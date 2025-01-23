@@ -30,7 +30,7 @@ class JpaApplicationTests {
     void t2() {
 
         Post p1 = new Post(1,"title1");
-        Post p2 = new Post(1,"title1");
+        Post p2 = new Post(1,"title2");
 
         Set<Post> posts = new HashSet<>();  // 중복 허용 X
 
@@ -38,6 +38,8 @@ class JpaApplicationTests {
         posts.add(p2);
 
         assertThat(posts.size()).isEqualTo(1);
+
+        assertThat(p1.hashCode()).isEqualTo(p2.hashCode());
 
     }
 
